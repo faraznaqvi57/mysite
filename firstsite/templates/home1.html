@@ -1,0 +1,160 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style type="text/css">
+        .scrollable{height:100px;overflow:scroll;bg:"lightblue";}
+        body{
+        background-image:url("{% static 'cric.jpg' %}");
+        }
+
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>Cricpick</title>
+  </head>
+  <body >
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">Cricpick</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/aboutus">About Us</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Services
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/match_calender">Match Calender</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/custom_match">Custom Team</a>
+        </div>
+      </li>
+
+    </ul>
+    <form class="form-inline my-2 my-lg-0" action="/search/{{ id1 }}" method="get">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" name="text" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+    <div class="container-fluid my-2">
+     <div class="alert alert-success " role="alert">
+        <h4 class="alert-heading">Live score!</h4>
+         <p>Timeline of live score of cricket matches.</p>
+        <hr>
+         <div class="container-fluid">
+
+             <div class="row">
+                 <div class="col-md-12">
+                     <div class="scrollable ">
+                         {% for score in live_score %}
+                         <h2>{{ score.team_1 }} vs {{ score.team_2 }}</h2>
+                         {% if score.stat %}
+                         <h5>{{ score.stat }}</h5>
+
+                         {% else %}
+                         <h5>Match did not start due to unavoidable </h5>
+
+                         {% endif %}
+                         {% endfor %}
+                     </div>
+                 </div>
+             </div>
+
+         </div>
+
+     </div>
+    </div>
+
+
+    <div class="container  bg-dark my-5  border rounded-top">
+        <div class="container-fluid mx-2 my-2">
+    <div class="row">
+        {% for match in matches  %}
+        {% if match.type == "ODI" or match.type == "Twenty20" or match.type == "Tests" %}
+    <div class="col-sm-4">
+            <div class="card mx-3 my-3" style="width: 18rem;">
+                <div class="card-body">
+                     <h5 class="card-title ">{{ match.team_1}} Vs {{ match.team_2 }}</h5>
+                     <h5 class="card-title text-success">{{ match.type }} match</h5>
+                     <h8 class="card-title">Timing:-{{ match.dateTimeGMT }}</h8>
+                    {% if match.toss_winner_team  in match %}
+                     <p class="card-text"><h7>Toss Winner Team:-</h7>{{ match.toss_winner_team }}</p>
+                    {% else %}
+                     <p class="card-text"><h6>Toss Winner Team:-</h6>no toss</p>
+                    {% endif %}
+                     <a href="/prediction/{{ match.unique_id }}" class="btn btn-primary">Predict the match</a>
+                 </div>
+            </div>
+
+        </div>
+        {% endif %}
+         {% endfor %}
+
+    </div>
+</div>
+    </div>
+
+
+
+
+    <div class="container">
+        <h1 >Previous Match Details</h1>
+    </div>
+    <div class="container my-5 bg-dark border rounded-top">
+        <div class="container-fluid mx-2 my-2">
+    <div class="row">
+        {% for previous_match in previous_matches %}
+        <div class="col-sm-4">
+            <div class="card mx-3 my-3" style="width: 18rem;">
+                <div class="card-body">
+                     <h5 class="card-title">Match type:-{{ previous_match.type }}</h5>
+                     <p class="card-text">Match date:-{{ previous_match.date }}</p>
+                     <a href="/match_details/{{ previous_match.unique_id }}" class="btn btn-primary">{{ previous_match.team_1 }} Vs {{ previous_match.team_2 }}</a>
+                 </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+            </div>
+        </div>
+
+
+
+
+
+    <div class="container-fluid text-white bg-dark pb-4 ">
+        <footer class="text">
+        <div class="container pt-3">
+            <p class="float-right">
+                <a href="/">Back to top</a>
+            </p>
+            <p>©Cricpick</p>
+
+        </div>
+        </footer>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>
