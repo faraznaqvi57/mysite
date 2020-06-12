@@ -63,10 +63,10 @@
                          {% for score in live_score %}
                          <h2>{{ score.team_1 }} vs {{ score.team_2 }}</h2>
                          {% if score.stat %}
-                         <h5>{{ score.stat }}</h5>
+                         <h6>{{ score.stat }}</h6>
 
                          {% else %}
-                         <h5>Match did not start due to unavoidable </h5>
+                         <h6>Match did not start due to unavoidable condition!!!!! </h6>
 
                          {% endif %}
                          {% endfor %}
@@ -114,6 +114,7 @@
     <div class="container">
         <h1 >Previous Match Details</h1>
     </div>
+    {% if not_update_previous_matches_details == '' %}
     <div class="container my-5 bg-dark border rounded-top">
         <div class="container-fluid mx-2 my-2">
     <div class="row">
@@ -122,17 +123,32 @@
             <div class="card mx-3 my-3" style="width: 18rem;">
                 <div class="card-body">
                      <h5 class="card-title">Match type:-{{ previous_match.type }}</h5>
-                     <p class="card-text">Match date:-{{ previous_match.date }}</p>
+                     <p class="card-text">Match date:-{{ previous_match.dateTimeGMT }}</p>
                      <a href="/match_details/{{ previous_match.unique_id }}" class="btn btn-primary">{{ previous_match.team_1 }} Vs {{ previous_match.team_2 }}</a>
                  </div>
             </div>
         </div>
         {% endfor %}
-
-
     </div>
             </div>
         </div>
+    {% else %}
+    <div class="container my-5 bg-dark border rounded-top">
+        <div class="container-fluid mx-2 my-2">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card mx-3 my-3" style="width: 18rem;">
+                <div class="card-body">
+                     <h3 class="card-title">{{not_update_previous_matches_details}}</h3>
+                     <p class="card-text"></p>
+
+                 </div>
+            </div>
+        </div>
+    </div>
+            </div>
+        </div>
+    {% endif %}
 
 
 

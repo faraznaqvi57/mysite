@@ -18,7 +18,7 @@ def home_page(request):
         i["team_2"] = i.pop("team-2")
 
 ####################### Live score section#############################
-        if i['matchStarted'] and (i['type'] == "ODI" or i['type'] == "Tests" or i['type'] == "Twenty20"):
+        if i['matchStarted'] or (i['type'] == "ODI" or i['type'] == "Tests" or i['type'] == "Twenty20"):
             live_score_url='https://cricapi.com/api/cricketScore?apikey=ZSTtSDmD3eU8nGyPeXNNJEaAU1F3&unique_id='
             live_score_url_final=live_score_url+str(i['unique_id'])
             response=requests.get(live_score_url_final)
@@ -54,8 +54,8 @@ def home_page(request):
             y=today_day.month
 
 
-            if months>=y:
-                if days>=x:
+            if months<=y:
+                if days<=x:
                     list_of_match_details_id.append(match_detail['unique_id'])
     global list_of_matches
     list_of_matches=[]
@@ -74,12 +74,17 @@ def home_page(request):
         list_of_matches.append(data)
     global id_search
     id_search = 1
+    if list_of_match_details_id == []:
+        not_update=" Previous matches details have not been updated yet!!! "
+    else:
+        not_update=''
 
     context={
         "matches":match,
         "live_score":list_of_live_score,
         "id1":id_search,
-        "previous_matches":list_of_matches
+        "previous_matches":list_of_matches,
+        "not_update_previous_matches_details":not_update
     }
     return render(request,"home1.html",context)
 
