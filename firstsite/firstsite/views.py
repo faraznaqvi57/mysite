@@ -8,7 +8,7 @@ import json , requests
 def home_page(request):
     global match
     global live_score_url
-    match_url="https://cricapi.com/api/matches?apikey=ZSTtSDmD3eU8nGyPeXNNJEaAU1F3"
+    match_url="https://cricapi.com/api/matches?apikey=ZSTtSDmD3eU8nGyPeXNNJEaAU1F3" # API to get cricket data
     response=requests.get(match_url)
     data=json.loads(response.text)
     match=data['matches']
@@ -60,7 +60,8 @@ def home_page(request):
     global list_of_matches
     list_of_matches=[]
     for id in list_of_match_details_id:
-        url = "https://cricapi.com/api/fantasySummary?apikey=ZSTtSDmD3eU8nGyPeXNNJEaAU1F3&unique_id="+ str(id)
+        url = "https://cricapi.com/api/fantasySummary?apikey=ZSTtSDmD3eU8nGyPeXNNJEaAU1F3&unique_id="+ str(id) #API for match details.
+        url_mdata = "https://cricapi.com/api/matches?apikey=ZSTtSDmD3eU8nGyPeXNNJEaAU1F3"
         response = requests.get(url)
         data = json.loads(response.text)
         count=0
